@@ -1,0 +1,3552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GlobeFX - Currency Converter</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<style>
+
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Inter,Arial,sans-serif;
+    background:
+        radial-gradient(circle at top left,#dcecff,transparent 30%),
+        radial-gradient(circle at bottom right,#e8f6ff,transparent 30%),
+        #f4f7fb;
+    color:#17324f;
+    min-height:100vh;
+}
+
+.container{
+    width:min(1100px,94%);
+    margin:auto;
+    padding:18px 0 25px;
+}
+
+button,
+select,
+input{
+    font-family:inherit;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+}
+
+.logo h1{
+    font-size:27px;
+    font-weight:800;
+    color:#12365b;
+}
+
+.logo p{
+    color:#718096;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.language-selector{
+    background:#fff;
+    border:1px solid #dfe7f0;
+    border-radius:10px;
+    padding:8px 10px;
+}
+
+.language-selector select{
+    border:0;
+    outline:0;
+    background:#fff;
+    font-weight:600;
+    color:#173858;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card,
+.section{
+    background:#fff;
+    border:1px solid #e0e8f1;
+    border-radius:17px;
+    padding:18px;
+    margin-bottom:12px;
+    box-shadow:0 7px 22px rgba(20,50,80,.06);
+}
+
+.title{
+    font-size:18px;
+    font-weight:800;
+    color:#12375e;
+    margin-bottom:13px;
+}
+
+/* =========================
+   CONVERTER
+========================= */
+
+.amount-label,
+.currency-box label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    color:#64748b;
+    margin-bottom:5px;
+}
+
+#amount{
+    width:100%;
+    padding:12px;
+    border:1px solid #d9e3ee;
+    border-radius:10px;
+    outline:none;
+    font-size:17px;
+    font-weight:700;
+    color:#173a60;
+    margin-bottom:13px;
+}
+
+#amount:focus{
+    border-color:#3b82f6;
+    box-shadow:0 0 0 3px rgba(59,130,246,.10);
+}
+
+.currency-row{
+    display:grid;
+    grid-template-columns:1fr 50px 1fr;
+    gap:10px;
+    align-items:end;
+}
+
+.currency-select{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    border:1px solid #d9e3ee;
+    border-radius:10px;
+    padding:3px 8px;
+    background:#fff;
+}
+
+.currency-select select{
+    width:100%;
+    border:0;
+    outline:0;
+    padding:9px 2px;
+    background:#fff;
+    color:#173958;
+    font-weight:700;
+}
+
+.currency-flag{
+    width:31px;
+    height:22px;
+    object-fit:cover;
+    border-radius:4px;
+    border:1px solid #d7e0ea;
+}
+
+.swap-btn{
+    width:46px;
+    height:46px;
+    border:0;
+    border-radius:50%;
+    background:#eaf3ff;
+    color:#2563eb;
+    font-size:23px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.swap-btn:hover{
+    transform:rotate(180deg);
+    background:#dcecff;
+}
+
+.convert-btn{
+    width:100%;
+    border:0;
+    margin-top:13px;
+    padding:12px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#2563eb,#0ea5e9);
+    color:white;
+    font-size:14px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.convert-btn:hover{
+    opacity:.94;
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result{
+    margin-top:13px;
+    padding:14px;
+    border-radius:13px;
+    text-align:center;
+    background:linear-gradient(135deg,#f2f7ff,#eef9ff);
+    border:1px solid #dbe8f6;
+}
+
+.result-flags{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:9px;
+    margin-bottom:6px;
+}
+
+.result-flags img{
+    width:34px;
+    height:24px;
+    object-fit:cover;
+    border-radius:4px;
+    border:1px solid #d6e0ea;
+}
+
+.result-value{
+    font-size:28px;
+    font-weight:800;
+    color:#143b64;
+}
+
+.rate{
+    font-size:11px;
+    color:#64748b;
+    margin-top:3px;
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:9px;
+    margin-bottom:12px;
+}
+
+.feature{
+    min-height:88px;
+    padding:11px 5px;
+    border-radius:13px;
+    background:#fff;
+    border:1px solid #dfe7f0;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.feature:hover{
+    transform:translateY(-2px);
+    border-color:#93c5fd;
+    box-shadow:0 7px 18px rgba(30,70,110,.08);
+}
+
+.feature-icon{
+    font-size:23px;
+    margin-bottom:6px;
+}
+
+.feature h3{
+    font-size:11px;
+    color:#173c61;
+}
+
+/* =========================
+   FEATURE OUTPUT
+========================= */
+
+.output{
+    display:none;
+}
+
+.output.active{
+    display:block;
+}
+
+.feature-box{
+    background:#f7faff;
+    border:1px solid #dfe8f2;
+    border-radius:12px;
+    padding:13px;
+}
+
+.feature-box h3{
+    color:#173c61;
+    font-size:14px;
+    margin-bottom:9px;
+}
+
+.feature-box p{
+    font-size:11px;
+    color:#64748b;
+    line-height:1.55;
+}
+
+.feature-grid-inner{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+}
+
+.feature-input{
+    width:100%;
+    padding:9px;
+    border:1px solid #d7e2ed;
+    border-radius:8px;
+    outline:none;
+    background:#fff;
+    margin-top:4px;
+}
+
+.small-btn{
+    border:0;
+    background:#2563eb;
+    color:#fff;
+    padding:9px 13px;
+    border-radius:8px;
+    margin-top:9px;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.small-btn:hover{
+    background:#1d4ed8;
+}
+
+.split-result{
+    margin-top:9px;
+    padding:11px;
+    background:#edf7ff;
+    border-radius:9px;
+    color:#15538c;
+    font-size:12px;
+    line-height:1.7;
+}
+
+/* =========================
+   SPLIT BILL
+========================= */
+
+.split-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+}
+
+/* =========================
+   EXCHANGE FEE
+========================= */
+
+.fee-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+}
+
+.fee-card{
+    background:#fff;
+    border:1px solid #dfe7ef;
+    border-radius:10px;
+    padding:11px;
+}
+
+.fee-card strong{
+    display:block;
+    color:#173b60;
+    font-size:13px;
+}
+
+.fee-card span{
+    display:block;
+    color:#718096;
+    font-size:10px;
+    margin-top:4px;
+}
+
+/* =========================
+   SPENDING ANALYTICS
+========================= */
+
+.spending-summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+}
+
+.stat-card{
+    background:#fff;
+    border:1px solid #dfe7ef;
+    border-radius:10px;
+    padding:11px;
+}
+
+.stat-card small{
+    display:block;
+    font-size:10px;
+    color:#718096;
+}
+
+.stat-card strong{
+    display:block;
+    margin-top:4px;
+    font-size:17px;
+    color:#173d63;
+}
+
+/* =========================
+   SHARE
+========================= */
+
+.buttons{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.buttons button{
+    border:0;
+    border-radius:8px;
+    padding:9px 12px;
+    background:#edf4ff;
+    color:#205da4;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* =========================
+   HISTORY
+========================= */
+
+.heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+}
+
+.history-actions{
+    display:flex;
+    gap:6px;
+}
+
+.history-actions button{
+    border:0;
+    padding:7px 10px;
+    border-radius:7px;
+    background:#edf4ff;
+    color:#2563eb;
+    cursor:pointer;
+    font-size:10px;
+    font-weight:700;
+}
+
+.history-content{
+    display:none;
+}
+
+.history-content.show{
+    display:block;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:7px;
+}
+
+th,
+td{
+    padding:8px;
+    border-bottom:1px solid #e7edf4;
+    font-size:10px;
+    text-align:left;
+}
+
+th{
+    background:#f7faff;
+    color:#47627f;
+}
+
+/* =====================================================
+   PROFESSIONAL VERTICAL EXCHANGE RATE GRAPH
+===================================================== */
+
+.graph-subtitle{
+    font-size:11px;
+    color:#718096;
+    margin-top:-7px;
+    margin-bottom:10px;
+}
+
+.graph-box{
+    width:100%;
+    height:310px;
+    border:1px solid #dfe7f0;
+    border-radius:13px;
+    background:#fff;
+    overflow:hidden;
+    padding:8px;
+}
+
+#rateChart{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+/* =========================
+   WORLD TIME
+========================= */
+
+.time-card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px;
+    border:1px solid #dfe7ef;
+    border-radius:11px;
+    background:#f9fbff;
+}
+
+.time-country{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.time-flag{
+    width:32px;
+    height:23px;
+    object-fit:cover;
+    border-radius:4px;
+}
+
+.time-country h3{
+    font-size:13px;
+    color:#173b60;
+}
+
+.time-country p{
+    font-size:10px;
+    color:#718096;
+    margin-top:2px;
+}
+
+.time-value{
+    font-size:18px;
+    font-weight:800;
+    color:#1d5ba0;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    text-align:center;
+    font-size:10px;
+    color:#718096;
+    padding:5px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:850px){
+
+    .feature-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:650px){
+
+    .container{
+        width:94%;
+    }
+
+    header{
+        align-items:flex-start;
+    }
+
+    .logo h1{
+        font-size:22px;
+    }
+
+    .currency-row{
+        grid-template-columns:1fr;
+    }
+
+    .swap-btn{
+        margin:auto;
+        transform:rotate(90deg);
+    }
+
+    .swap-btn:hover{
+        transform:rotate(270deg);
+    }
+
+    .feature-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .feature-grid-inner,
+    .split-grid,
+    .fee-grid,
+    .spending-summary{
+        grid-template-columns:1fr;
+    }
+
+    .heading{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .graph-box{
+        height:270px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="logo">
+
+        <h1>🌍 GlobeFX</h1>
+
+        <p>Smart Currency Converter</p>
+
+    </div>
+
+
+    <div class="language-selector">
+
+        🌐
+
+        <select>
+
+            <option>English</option>
+            <option>தமிழ்</option>
+            <option>हिन्दी</option>
+
+        </select>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN CURRENCY CONVERTER
+===================================================== -->
+
+<section class="card">
+
+    <h2 class="title">
+        💱 Currency Converter
+    </h2>
+
+
+    <label class="amount-label">
+        Enter Amount
+    </label>
+
+
+    <input
+        type="number"
+        id="amount"
+        value="1"
+        min="0"
+        placeholder="Enter amount"
+    >
+
+
+    <div class="currency-row">
+
+
+        <!-- FROM -->
+
+        <div class="currency-box">
+
+            <label>
+                From Currency
+            </label>
+
+            <div class="currency-select">
+
+                <img
+                    id="fromFlag"
+                    class="currency-flag"
+                    alt="From flag"
+                >
+
+                <select id="fromCurrency"></select>
+
+            </div>
+
+        </div>
+
+
+        <!-- SWAP -->
+
+        <button
+            type="button"
+            class="swap-btn"
+            id="swapBtn">
+
+            ⇄
+
+        </button>
+
+
+        <!-- TO -->
+
+        <div class="currency-box">
+
+            <label>
+                To Currency
+            </label>
+
+            <div class="currency-select">
+
+                <img
+                    id="toFlag"
+                    class="currency-flag"
+                    alt="To flag"
+                >
+
+                <select id="toCurrency"></select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="convert-btn"
+        id="convertBtn">
+
+        Convert Currency
+
+    </button>
+
+
+    <div class="result">
+
+        <div class="result-flags">
+
+            <img id="resultFromFlag" alt="From">
+
+            <span>➡️</span>
+
+            <img id="resultToFlag" alt="To">
+
+        </div>
+
+
+        <div
+            class="result-value"
+            id="result">
+
+            0.00
+
+        </div>
+
+
+        <div
+            class="rate"
+            id="rate">
+
+            Exchange rate will appear here
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<div class="feature-grid">
+
+
+    <div
+        class="feature"
+        onclick="showFeature('travel')">
+
+        <div class="feature-icon">
+            ✈️
+        </div>
+
+        <h3>
+            Travel Budget
+        </h3>
+
+    </div>
+
+
+    <div
+        class="feature"
+        onclick="showFeature('strength')">
+
+        <div class="feature-icon">
+            📊
+        </div>
+
+        <h3>
+            Currency Strength
+        </h3>
+
+    </div>
+
+
+    <div
+        class="feature"
+        onclick="showFeature('country')">
+
+        <div class="feature-icon">
+            🌍
+        </div>
+
+        <h3>
+            Country Info
+        </h3>
+
+    </div>
+
+
+    <div
+        class="feature"
+        onclick="showFeature('split')">
+
+        <div class="feature-icon">
+            👥
+        </div>
+
+        <h3>
+            Split Bill
+        </h3>
+
+    </div>
+
+
+    <div
+        class="feature"
+        onclick="showFeature('fee')">
+
+        <div class="feature-icon">
+            💰
+        </div>
+
+        <h3>
+            Exchange Fee
+        </h3>
+
+    </div>
+
+
+    <div
+        class="feature"
+        onclick="showFeature('spending')">
+
+        <div class="feature-icon">
+            📈
+        </div>
+
+        <h3>
+            Spending Analytics
+        </h3>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FEATURE OUTPUT
+===================================================== -->
+
+<section
+    class="section output"
+    id="featureOutput">
+
+    <h2
+        class="title"
+        id="featureTitle">
+
+        Feature
+
+    </h2>
+
+
+    <div id="featureContent"></div>
+
+</section>
+
+
+<!-- =====================================================
+     SHARE
+===================================================== -->
+
+<section class="section">
+
+    <h2 class="title">
+        📤 Share Conversion
+    </h2>
+
+
+    <div class="buttons">
+
+        <button
+            type="button"
+            onclick="copyConversion()">
+
+            📋 Copy
+
+        </button>
+
+
+        <button
+            type="button"
+            onclick="shareConversion()">
+
+            🔗 Share
+
+        </button>
+
+
+        <button
+            type="button"
+            onclick="whatsappShare()">
+
+            💬 WhatsApp
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     HISTORY
+===================================================== -->
+
+<section class="section">
+
+    <div class="heading">
+
+        <h2 class="title">
+            📜 Conversion History
+        </h2>
+
+
+        <div class="history-actions">
+
+            <button
+                type="button"
+                id="historyToggle"
+                onclick="toggleHistory()">
+
+                Show History
+
+            </button>
+
+
+            <button
+                type="button"
+                onclick="clearHistory()">
+
+                🗑️ Clear
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="history-content"
+        id="historyContent">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>From</th>
+                        <th>Amount</th>
+                        <th>To</th>
+                        <th>Result</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="historyTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     EXCHANGE RATE GRAPH
+     ONLY GRAPH DESIGN IS SPECIAL HERE
+===================================================== -->
+
+<section class="section">
+
+    <h2 class="title">
+        📈 Exchange Rate Graph
+    </h2>
+
+
+    <p
+        class="graph-subtitle"
+        id="graphPair">
+
+        Exchange rate trend
+
+    </p>
+
+
+    <div class="graph-box">
+
+        <canvas id="rateChart"></canvas>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DESTINATION TIME
+===================================================== -->
+
+<section class="section">
+
+    <h2 class="title">
+        🌎 Destination Country Time
+    </h2>
+
+
+    <div class="time-card">
+
+        <div class="time-country">
+
+            <img
+                id="timeFlag"
+                class="time-flag"
+                alt="Country flag"
+            >
+
+            <div>
+
+                <h3 id="timeCountry">
+                    Country
+                </h3>
+
+                <p id="timeCity">
+                    Capital
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="time-value"
+            id="destinationTime">
+
+            --:--:--
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    🌍 GlobeFX — Smart Currency Conversion
+
+</footer>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CURRENCY DATABASE
+===================================================== */
+
+const currencies = [
+
+["USD","US Dollar","us","United States","Washington D.C.","North America","$","America/New_York"],
+["EUR","Euro","eu","European Union","Brussels","Europe","€","Europe/Brussels"],
+["INR","Indian Rupee","in","India","New Delhi","Asia","₹","Asia/Kolkata"],
+["GBP","British Pound","gb","United Kingdom","London","Europe","£","Europe/London"],
+["JPY","Japanese Yen","jp","Japan","Tokyo","Asia","¥","Asia/Tokyo"],
+["AUD","Australian Dollar","au","Australia","Canberra","Oceania","A$","Australia/Sydney"],
+["CAD","Canadian Dollar","ca","Canada","Ottawa","North America","C$","America/Toronto"],
+["CHF","Swiss Franc","ch","Switzerland","Bern","Europe","CHF","Europe/Zurich"],
+["CNY","Chinese Yuan","cn","China","Beijing","Asia","¥","Asia/Shanghai"],
+["HKD","Hong Kong Dollar","hk","Hong Kong","Hong Kong","Asia","HK$","Asia/Hong_Kong"],
+["NZD","New Zealand Dollar","nz","New Zealand","Wellington","Oceania","NZ$","Pacific/Auckland"],
+["SGD","Singapore Dollar","sg","Singapore","Singapore","Asia","S$","Asia/Singapore"],
+["KRW","South Korean Won","kr","South Korea","Seoul","Asia","₩","Asia/Seoul"],
+["AED","UAE Dirham","ae","United Arab Emirates","Abu Dhabi","Asia","د.إ","Asia/Dubai"],
+["SAR","Saudi Riyal","sa","Saudi Arabia","Riyadh","Asia","﷼","Asia/Riyadh"],
+["QAR","Qatari Riyal","qa","Qatar","Doha","Asia","﷼","Asia/Qatar"],
+["KWD","Kuwaiti Dinar","kw","Kuwait","Kuwait City","Asia","د.ك","Asia/Kuwait"],
+["BHD","Bahraini Dinar","bh","Bahrain","Manama","Asia",".د.ب","Asia/Bahrain"],
+["OMR","Omani Rial","om","Oman","Muscat","Asia","﷼","Asia/Muscat"],
+["THB","Thai Baht","th","Thailand","Bangkok","Asia","฿","Asia/Bangkok"],
+["MYR","Malaysian Ringgit","my","Malaysia","Kuala Lumpur","Asia","RM","Asia/Kuala_Lumpur"],
+["IDR","Indonesian Rupiah","id","Indonesia","Jakarta","Asia","Rp","Asia/Jakarta"],
+["PHP","Philippine Peso","ph","Philippines","Manila","Asia","₱","Asia/Manila"],
+["VND","Vietnamese Dong","vn","Vietnam","Hanoi","Asia","₫","Asia/Ho_Chi_Minh"],
+["PKR","Pakistani Rupee","pk","Pakistan","Islamabad","Asia","₨","Asia/Karachi"],
+["BDT","Bangladeshi Taka","bd","Bangladesh","Dhaka","Asia","৳","Asia/Dhaka"],
+["LKR","Sri Lankan Rupee","lk","Sri Lanka","Colombo","Asia","Rs","Asia/Colombo"],
+["NPR","Nepalese Rupee","np","Nepal","Kathmandu","Asia","Rs","Asia/Kathmandu"],
+["TRY","Turkish Lira","tr","Turkey","Ankara","Europe","₺","Europe/Istanbul"],
+["RUB","Russian Ruble","ru","Russia","Moscow","Europe","₽","Europe/Moscow"],
+["UAH","Ukrainian Hryvnia","ua","Ukraine","Kyiv","Europe","₴","Europe/Kyiv"],
+["PLN","Polish Zloty","pl","Poland","Warsaw","Europe","zł","Europe/Warsaw"],
+["SEK","Swedish Krona","se","Sweden","Stockholm","Europe","kr","Europe/Stockholm"],
+["NOK","Norwegian Krone","no","Norway","Oslo","Europe","kr","Europe/Oslo"],
+["DKK","Danish Krone","dk","Denmark","Copenhagen","Europe","kr","Europe/Copenhagen"],
+["CZK","Czech Koruna","cz","Czech Republic","Prague","Europe","Kč","Europe/Prague"],
+["HUF","Hungarian Forint","hu","Hungary","Budapest","Europe","Ft","Europe/Budapest"],
+["RON","Romanian Leu","ro","Romania","Bucharest","Europe","lei","Europe/Bucharest"],
+["ILS","Israeli Shekel","il","Israel","Jerusalem","Asia","₪","Asia/Jerusalem"],
+["ZAR","South African Rand","za","South Africa","Pretoria","Africa","R","Africa/Johannesburg"],
+["NGN","Nigerian Naira","ng","Nigeria","Abuja","Africa","₦","Africa/Lagos"],
+["KES","Kenyan Shilling","ke","Kenya","Nairobi","Africa","KSh","Africa/Nairobi"],
+["GHS","Ghanaian Cedi","gh","Ghana","Accra","Africa","₵","Africa/Accra"],
+["MAD","Moroccan Dirham","ma","Morocco","Rabat","Africa","د.م.","Africa/Casablanca"],
+["EGP","Egyptian Pound","eg","Egypt","Cairo","Africa","£","Africa/Cairo"],
+["BRL","Brazilian Real","br","Brazil","Brasilia","South America","R$","America/Sao_Paulo"],
+["MXN","Mexican Peso","mx","Mexico","Mexico City","North America","$","America/Mexico_City"],
+["ARS","Argentine Peso","ar","Argentina","Buenos Aires","South America","$","America/Argentina/Buenos_Aires"],
+["CLP","Chilean Peso","cl","Chile","Santiago","South America","$","America/Santiago"],
+["COP","Colombian Peso","co","Colombia","Bogota","South America","$","America/Bogota"],
+["PEN","Peruvian Sol","pe","Peru","Lima","South America","S/","America/Lima"]
+
+];
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const fromCurrency =
+document.getElementById("fromCurrency");
+
+const toCurrency =
+document.getElementById("toCurrency");
+
+const amount =
+document.getElementById("amount");
+
+const result =
+document.getElementById("result");
+
+const rate =
+document.getElementById("rate");
+
+const fromFlag =
+document.getElementById("fromFlag");
+
+const toFlag =
+document.getElementById("toFlag");
+
+const resultFromFlag =
+document.getElementById("resultFromFlag");
+
+const resultToFlag =
+document.getElementById("resultToFlag");
+
+const featureOutput =
+document.getElementById("featureOutput");
+
+const featureTitle =
+document.getElementById("featureTitle");
+
+const featureContent =
+document.getElementById("featureContent");
+
+const historyContent =
+document.getElementById("historyContent");
+
+const historyTable =
+document.getElementById("historyTable");
+
+const canvas =
+document.getElementById("rateChart");
+
+const ctx =
+canvas.getContext("2d");
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let currentRate = 1;
+
+let historyData =
+JSON.parse(
+localStorage.getItem("globefxHistory") || "[]"
+);
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function getCurrency(code){
+
+    return currencies.find(
+        item => item[0] === code
+    );
+
+}
+
+
+function getFlag(code){
+
+    const currency =
+    getCurrency(code);
+
+    return `https://flagcdn.com/w80/${currency[2]}.png`;
+
+}
+
+
+function formatNumber(value){
+
+    return Number(value).toLocaleString(
+        undefined,
+        {
+            maximumFractionDigits:4
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LOAD CURRENCIES
+===================================================== */
+
+function loadCurrencies(){
+
+    currencies.forEach(item => {
+
+        const option1 =
+        document.createElement("option");
+
+        option1.value =
+        item[0];
+
+        option1.textContent =
+        `${item[0]} — ${item[1]}`;
+
+        fromCurrency.appendChild(option1);
+
+
+        const option2 =
+        document.createElement("option");
+
+        option2.value =
+        item[0];
+
+        option2.textContent =
+        `${item[0]} — ${item[1]}`;
+
+        toCurrency.appendChild(option2);
+
+    });
+
+
+    fromCurrency.value = "USD";
+    toCurrency.value = "INR";
+
+    updateFlags();
+
+}
+
+
+/* =====================================================
+   UPDATE FLAGS
+===================================================== */
+
+function updateFlags(){
+
+    fromFlag.src =
+    getFlag(fromCurrency.value);
+
+    toFlag.src =
+    getFlag(toCurrency.value);
+
+    resultFromFlag.src =
+    getFlag(fromCurrency.value);
+
+    resultToFlag.src =
+    getFlag(toCurrency.value);
+
+    updateWorldTime();
+
+    updateGraphPair();
+
+}
+
+
+/* =====================================================
+   FETCH RATE
+===================================================== */
+
+async function fetchRate(){
+
+    const from =
+    fromCurrency.value;
+
+    const to =
+    toCurrency.value;
+
+
+    if(from === to){
+
+        currentRate = 1;
+
+        return 1;
+
+    }
+
+
+    try{
+
+        const response =
+        await fetch(
+            `https://open.er-api.com/v6/latest/${from}`
+        );
+
+
+        const data =
+        await response.json();
+
+
+        if(
+            data.result === "success" &&
+            data.rates &&
+            data.rates[to]
+        ){
+
+            currentRate =
+            Number(data.rates[to]);
+
+            return currentRate;
+
+        }
+
+    }
+    catch(error){
+
+        console.log(
+            "Exchange API error:",
+            error
+        );
+
+    }
+
+
+    return currentRate || 1;
+
+}
+
+
+/* =====================================================
+   CONVERT
+===================================================== */
+
+async function convertCurrency(
+    saveHistory = true
+){
+
+    const value =
+    Number(amount.value) || 0;
+
+
+    if(value < 0){
+
+        alert(
+            "Please enter a valid amount."
+        );
+
+        return;
+
+    }
+
+
+    const button =
+    document.getElementById("convertBtn");
+
+
+    button.disabled = true;
+
+    button.textContent =
+    "Converting...";
+
+
+    const exchangeRate =
+    await fetchRate();
+
+
+    const converted =
+    value * exchangeRate;
+
+
+    result.textContent =
+    formatNumber(converted);
+
+
+    rate.textContent =
+    `1 ${fromCurrency.value} = ${formatNumber(exchangeRate)} ${toCurrency.value}`;
+
+
+    updateFlags();
+
+
+    if(
+        saveHistory &&
+        value > 0
+    ){
+
+        saveConversion(
+            value,
+            converted,
+            exchangeRate
+        );
+
+    }
+
+
+    drawGraph();
+
+
+    button.disabled = false;
+
+    button.textContent =
+    "Convert Currency";
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+function saveConversion(
+    amountValue,
+    convertedValue,
+    exchangeRate
+){
+
+    historyData.unshift({
+
+        date:new Date().toLocaleString(),
+
+        from:fromCurrency.value,
+
+        amount:amountValue,
+
+        to:toCurrency.value,
+
+        result:convertedValue,
+
+        rate:exchangeRate
+
+    });
+
+
+    historyData =
+    historyData.slice(0,20);
+
+
+    localStorage.setItem(
+        "globefxHistory",
+        JSON.stringify(historyData)
+    );
+
+
+    renderHistory();
+
+}
+
+
+function renderHistory(){
+
+    historyTable.innerHTML = "";
+
+
+    if(historyData.length === 0){
+
+        historyTable.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="5"
+                    style="text-align:center;color:#718096;">
+
+                    No conversion history yet.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    historyData.forEach(item => {
+
+        const row =
+        document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${item.date}</td>
+
+            <td>${item.from}</td>
+
+            <td>${formatNumber(item.amount)}</td>
+
+            <td>${item.to}</td>
+
+            <td>${formatNumber(item.result)}</td>
+
+        `;
+
+
+        historyTable.appendChild(row);
+
+    });
+
+}
+
+
+function toggleHistory(){
+
+    const visible =
+    historyContent.classList.toggle("show");
+
+
+    const button =
+    document.getElementById("historyToggle");
+
+
+    button.textContent =
+    visible
+    ? "Hide History"
+    : "Show History";
+
+}
+
+
+function clearHistory(){
+
+    historyData = [];
+
+    localStorage.removeItem(
+        "globefxHistory"
+    );
+
+    renderHistory();
+
+    drawGraph();
+
+}
+
+
+/* =====================================================
+   SWAP
+===================================================== */
+
+document
+.getElementById("swapBtn")
+.addEventListener(
+    "click",
+    async function(){
+
+        const old =
+        fromCurrency.value;
+
+        fromCurrency.value =
+        toCurrency.value;
+
+        toCurrency.value =
+        old;
+
+        updateFlags();
+
+        await convertCurrency(false);
+
+    }
+);
+
+
+/* =====================================================
+   CONVERT BUTTON
+===================================================== */
+
+document
+.getElementById("convertBtn")
+.addEventListener(
+    "click",
+    function(){
+
+        convertCurrency(true);
+
+    }
+);
+
+
+/* =====================================================
+   LIVE AMOUNT
+===================================================== */
+
+amount.addEventListener(
+    "input",
+    function(){
+
+        const value =
+        Number(amount.value) || 0;
+
+
+        result.textContent =
+        formatNumber(
+            value * currentRate
+        );
+
+    }
+);
+
+
+/* =====================================================
+   CURRENCY CHANGE
+===================================================== */
+
+fromCurrency.addEventListener(
+    "change",
+    async function(){
+
+        updateFlags();
+
+        await convertCurrency(false);
+
+    }
+);
+
+
+toCurrency.addEventListener(
+    "change",
+    async function(){
+
+        updateFlags();
+
+        await convertCurrency(false);
+
+    }
+);
+
+
+/* =====================================================
+   FEATURE SYSTEM
+===================================================== */
+
+function showFeature(type){
+
+    featureOutput.classList.add(
+        "active"
+    );
+
+
+    /* =========================
+       TRAVEL
+    ========================= */
+
+    if(type === "travel"){
+
+        featureTitle.textContent =
+        "✈️ Travel Budget";
+
+        featureContent.innerHTML = `
+
+            <div class="feature-box">
+
+                <h3>
+                    Travel Budget Calculator
+                </h3>
+
+                <div class="feature-grid-inner">
+
+                    <div>
+
+                        <label>
+                            Budget (${fromCurrency.value})
+                        </label>
+
+                        <input
+                            id="travelBudget"
+                            class="feature-input"
+                            type="number"
+                            value="1000">
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Travel Days
+                        </label>
+
+                        <input
+                            id="travelDays"
+                            class="feature-input"
+                            type="number"
+                            value="5"
+                            min="1">
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="small-btn"
+                    type="button"
+                    onclick="calculateTravel()">
+
+                    Calculate Budget
+
+                </button>
+
+
+                <div
+                    class="split-result"
+                    id="travelResult">
+
+                    Enter details and calculate.
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================
+       STRENGTH
+    ========================= */
+
+    if(type === "strength"){
+
+        featureTitle.textContent =
+        "📊 Currency Strength";
+
+
+        const strength =
+        calculateStrength();
+
+
+        featureContent.innerHTML = `
+
+            <div class="feature-box">
+
+                <h3>
+                    ${fromCurrency.value}
+                    vs
+                    ${toCurrency.value}
+                </h3>
+
+
+                <div class="spending-summary">
+
+                    <div class="stat-card">
+
+                        <small>
+                            ${fromCurrency.value}
+                        </small>
+
+                        <strong>
+                            ${strength.from}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <small>
+                            ${toCurrency.value}
+                        </small>
+
+                        <strong>
+                            ${strength.to}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <small>
+                            Current Rate
+                        </small>
+
+                        <strong>
+                            ${formatNumber(currentRate)}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================
+       COUNTRY INFO
+    ========================= */
+
+    if(type === "country"){
+
+        const c =
+        getCurrency(
+            toCurrency.value
+        );
+
+
+        featureTitle.textContent =
+        "🌍 Country Information";
+
+
+        featureContent.innerHTML = `
+
+            <div class="feature-box">
+
+                <div
+                    style="
+                    display:flex;
+                    align-items:center;
+                    gap:10px;
+                    margin-bottom:10px;">
+
+                    <img
+                        src="${getFlag(toCurrency.value)}"
+                        style="
+                        width:40px;
+                        height:28px;
+                        object-fit:cover;
+                        border-radius:5px;"
+                        alt="${c[3]}">
+
+                    <div>
+
+                        <h3>
+                            ${c[3]}
+                        </h3>
+
+                        <p>
+                            ${c[0]} — ${c[1]}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature-grid-inner">
+
+                    <div class="stat-card">
+
+                        <small>
+                            Capital
+                        </small>
+
+                        <strong>
+                            ${c[4]}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <small>
+                            Region
+                        </small>
+
+                        <strong>
+                            ${c[5]}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <small>
+                            Currency
+                        </small>
+
+                        <strong>
+                            ${c[1]}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <small>
+                            Symbol
+                        </small>
+
+                        <strong>
+                            ${c[6]}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================
+       SPLIT BILL
+    ========================= */
+
+    if(type === "split"){
+
+        featureTitle.textContent =
+        "👥 Split Bill";
+
+
+        featureContent.innerHTML = `
+
+            <div class="feature-box">
+
+                <h3>
+                    Split your bill
+                </h3>
+
+
+                <div class="split-grid">
+
+                    <div>
+
+                        <label>
+                            Total Bill
+                        </label>
+
+                        <input
+                            id="splitAmount"
+                            class="feature-input"
+                            type="number"
+                            value="1000"
+                            min="0">
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            People
+                        </label>
+
+                        <input
+                            id="splitPeople"
+                            class="feature-input"
+                            type="number"
+                            value="4"
+                            min="1">
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Tip %
+                        </label>
+
+                        <input
+                            id="splitTip"
+                            class="feature-input"
+                            type="number"
+                            value="0"
+                            min="0">
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="small-btn"
+                    type="button"
+                    onclick="calculateSplit()">
+
+                    Split Bill
+
+                </button>
+
+
+                <div
+                    class="split-result"
+                    id="splitResult">
+
+                    Enter values and calculate.
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================
+       EXCHANGE FEE
+    ========================= */
+
+    if(type === "fee"){
+
+        featureTitle.textContent =
+        "💰 Exchange Fee Comparison";
+
+
+        featureContent.innerHTML = `
+
+            <div class="feature-box">
+
+                <h3>
+                    Compare Exchange Fees
+                </h3>
+
+
+                <p style="margin-bottom:10px;">
+
+                    Compare estimated fees for
+                    your current conversion.
+
+                </p>
+
+
+                <div class="fee-grid">
+
+
+                    <div class="fee-card">
+
+                        <strong>
+                            🏦 Bank
+                        </strong>
+
+                        <span>
+                            Estimated Fee: 2%
+                        </span>
+
+                        <span id="bankFee">
+                            Calculating...
+                        </span>
+
+                    </div>
+
+
+                    <div class="fee-card">
+
+                        <strong>
+                            💳 Card
+                        </strong>
+
+                        <span>
+                            Estimated Fee: 3%
+                        </span>
+
+                        <span id="cardFee">
+                            Calculating...
+                        </span>
+
+                    </div>
+
+
+                    <div class="fee-card">
+
+                        <strong>
+                            💵 Cash
+                        </strong>
+
+                        <span>
+                            Estimated Fee: 1%
+                        </span>
+
+                        <span id="cashFee">
+                            Calculating...
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="small-btn"
+                    type="button"
+                    onclick="calculateFees()">
+
+                    Compare Fees
+
+                </button>
+
+
+                <div
+                    class="split-result"
+                    id="feeResult">
+
+                    Calculating fee comparison...
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        calculateFees();
+
+    }
+
+
+    /* =========================
+       SPENDING ANALYTICS
+    ========================= */
+
+    if(type === "spending"){
+
+        featureTitle.textContent =
+        "📈 Spending Analytics";
+
+        renderSpendingAnalytics();
+
+    }
+
+
+    featureOutput.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest"
+    });
+
+}
+
+
+/* =====================================================
+   TRAVEL
+===================================================== */
+
+function calculateTravel(){
+
+    const budget =
+    Number(
+        document.getElementById(
+            "travelBudget"
+        ).value
+    ) || 0;
+
+
+    const days =
+    Number(
+        document.getElementById(
+            "travelDays"
+        ).value
+    ) || 1;
+
+
+    const total =
+    budget * currentRate;
+
+
+    const daily =
+    total / days;
+
+
+    document.getElementById(
+        "travelResult"
+    ).innerHTML = `
+
+        Total Budget:
+        <strong>
+            ${formatNumber(total)}
+            ${toCurrency.value}
+        </strong>
+
+        <br>
+
+        Daily Budget:
+        <strong>
+            ${formatNumber(daily)}
+            ${toCurrency.value}
+        </strong>
+
+    `;
+
+}
+
+
+/* =====================================================
+   SPLIT BILL
+===================================================== */
+
+function calculateSplit(){
+
+    const bill =
+    Number(
+        document.getElementById(
+            "splitAmount"
+        ).value
+    ) || 0;
+
+
+    const people =
+    Number(
+        document.getElementById(
+            "splitPeople"
+        ).value
+    ) || 1;
+
+
+    const tip =
+    Number(
+        document.getElementById(
+            "splitTip"
+        ).value
+    ) || 0;
+
+
+    const tipAmount =
+    bill * tip / 100;
+
+
+    const total =
+    bill + tipAmount;
+
+
+    const each =
+    total / people;
+
+
+    const convertedEach =
+    each * currentRate;
+
+
+    document.getElementById(
+        "splitResult"
+    ).innerHTML = `
+
+        Total Bill:
+        <strong>
+            ${formatNumber(total)}
+            ${fromCurrency.value}
+        </strong>
+
+        <br>
+
+        Each Person:
+        <strong>
+            ${formatNumber(each)}
+            ${fromCurrency.value}
+        </strong>
+
+        <br>
+
+        Converted Per Person:
+        <strong>
+            ${formatNumber(convertedEach)}
+            ${toCurrency.value}
+        </strong>
+
+    `;
+
+}
+
+
+/* =====================================================
+   EXCHANGE FEE
+===================================================== */
+
+function calculateFees(){
+
+    const amountValue =
+    Number(amount.value) || 0;
+
+
+    const exchangeAmount =
+    amountValue * currentRate;
+
+
+    const bankFee =
+    exchangeAmount * 0.02;
+
+
+    const cardFee =
+    exchangeAmount * 0.03;
+
+
+    const cashFee =
+    exchangeAmount * 0.01;
+
+
+    const bankElement =
+    document.getElementById("bankFee");
+
+    const cardElement =
+    document.getElementById("cardFee");
+
+    const cashElement =
+    document.getElementById("cashFee");
+
+
+    if(bankElement){
+
+        bankElement.textContent =
+        `${formatNumber(bankFee)} ${toCurrency.value}`;
+
+    }
+
+
+    if(cardElement){
+
+        cardElement.textContent =
+        `${formatNumber(cardFee)} ${toCurrency.value}`;
+
+    }
+
+
+    if(cashElement){
+
+        cashElement.textContent =
+        `${formatNumber(cashFee)} ${toCurrency.value}`;
+
+    }
+
+
+    const options = [
+
+        {
+            name:"Cash Exchange",
+            fee:cashFee
+        },
+
+        {
+            name:"Bank",
+            fee:bankFee
+        },
+
+        {
+            name:"Card",
+            fee:cardFee
+        }
+
+    ];
+
+
+    options.sort(
+        (a,b) => a.fee - b.fee
+    );
+
+
+    const best =
+    options[0];
+
+
+    const feeResult =
+    document.getElementById("feeResult");
+
+
+    if(feeResult){
+
+        feeResult.innerHTML = `
+
+            🏆 Best Option:
+            <strong>
+                ${best.name}
+            </strong>
+
+            <br>
+
+            Lowest Estimated Fee:
+            <strong>
+                ${formatNumber(best.fee)}
+                ${toCurrency.value}
+            </strong>
+
+            <br>
+
+            Converted Amount:
+            <strong>
+                ${formatNumber(exchangeAmount)}
+                ${toCurrency.value}
+            </strong>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   SPENDING ANALYTICS
+===================================================== */
+
+function renderSpendingAnalytics(){
+
+    const totalConversions =
+    historyData.length;
+
+
+    const totalAmount =
+    historyData.reduce(
+        (sum,item) =>
+        sum + Number(item.amount || 0),
+        0
+    );
+
+
+    const totalConverted =
+    historyData.reduce(
+        (sum,item) =>
+        sum + Number(item.result || 0),
+        0
+    );
+
+
+    const average =
+    totalConversions > 0
+    ?
+    totalAmount / totalConversions
+    :
+    0;
+
+
+    featureContent.innerHTML = `
+
+        <div class="feature-box">
+
+            <h3>
+                📊 Your Spending Overview
+            </h3>
+
+
+            <div class="spending-summary">
+
+
+                <div class="stat-card">
+
+                    <small>
+                        Total Conversions
+                    </small>
+
+                    <strong>
+                        ${totalConversions}
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <small>
+                        Total Amount
+                    </small>
+
+                    <strong>
+                        ${formatNumber(totalAmount)}
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <small>
+                        Average Amount
+                    </small>
+
+                    <strong>
+                        ${formatNumber(average)}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div
+                style="
+                margin-top:9px;
+                padding:11px;
+                background:#fff;
+                border:1px solid #dfe7ef;
+                border-radius:9px;
+                font-size:11px;
+                line-height:1.7;">
+
+                <div>
+
+                    <strong>
+                        Total Converted Value:
+                    </strong>
+
+                    ${formatNumber(totalConverted)}
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Current Pair:
+                    </strong>
+
+                    ${fromCurrency.value}
+                    →
+                    ${toCurrency.value}
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Current Rate:
+                    </strong>
+
+                    ${formatNumber(currentRate)}
+
+                </div>
+
+            </div>
+
+
+            ${
+                totalConversions > 0
+
+                ?
+
+                `
+
+                <div
+                    style="
+                    margin-top:9px;
+                    padding:10px;
+                    background:#eefaf3;
+                    color:#28704a;
+                    border-radius:9px;
+                    font-size:11px;">
+
+                    ✅ Analytics are calculated from
+                    your conversion history.
+
+                </div>
+
+                `
+
+                :
+
+                `
+
+                <div
+                    style="
+                    margin-top:9px;
+                    padding:10px;
+                    background:#eef6ff;
+                    color:#35658d;
+                    border-radius:9px;
+                    font-size:11px;">
+
+                    💡 Make some conversions first.
+                    Your spending analytics will appear here.
+
+                </div>
+
+                `
+            }
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   CURRENCY STRENGTH
+===================================================== */
+
+function calculateStrength(){
+
+    const pairHistory =
+    historyData.filter(
+        item =>
+        item.from === fromCurrency.value &&
+        item.to === toCurrency.value
+    );
+
+
+    if(pairHistory.length < 2){
+
+        return {
+            from:50,
+            to:50
+        };
+
+    }
+
+
+    const average =
+    pairHistory.reduce(
+        (sum,item) =>
+        sum + Number(item.rate),
+        0
+    ) / pairHistory.length;
+
+
+    const difference =
+    ((currentRate - average) / average)
+    * 100;
+
+
+    let fromScore =
+    Math.round(
+        50 + difference * 4
+    );
+
+
+    fromScore =
+    Math.max(
+        20,
+        Math.min(
+            80,
+            fromScore
+        )
+    );
+
+
+    return {
+
+        from:fromScore,
+
+        to:100-fromScore
+
+    };
+
+}
+
+
+/* =====================================================
+   SHARE
+===================================================== */
+
+function getShareText(){
+
+    return `🌍 GlobeFX Currency Conversion
+
+${amount.value} ${fromCurrency.value}
+= ${result.textContent} ${toCurrency.value}
+
+1 ${fromCurrency.value}
+= ${formatNumber(currentRate)} ${toCurrency.value}`;
+
+}
+
+
+async function copyConversion(){
+
+    const text =
+    getShareText();
+
+
+    try{
+
+        await navigator.clipboard.writeText(
+            text
+        );
+
+        alert(
+            "Conversion copied successfully!"
+        );
+
+    }
+    catch(error){
+
+        const textarea =
+        document.createElement("textarea");
+
+        textarea.value = text;
+
+        document.body.appendChild(
+            textarea
+        );
+
+        textarea.select();
+
+        document.execCommand(
+            "copy"
+        );
+
+        textarea.remove();
+
+        alert(
+            "Conversion copied successfully!"
+        );
+
+    }
+
+}
+
+
+async function shareConversion(){
+
+    const text =
+    getShareText();
+
+
+    if(navigator.share){
+
+        try{
+
+            await navigator.share({
+
+                title:"GlobeFX Conversion",
+
+                text:text
+
+            });
+
+        }
+        catch(error){
+
+            console.log(
+                "Share cancelled"
+            );
+
+        }
+
+    }
+    else{
+
+        copyConversion();
+
+    }
+
+}
+
+
+function whatsappShare(){
+
+    const text =
+    encodeURIComponent(
+        getShareText()
+    );
+
+
+    window.open(
+        `https://wa.me/?text=${text}`,
+        "_blank"
+    );
+
+}
+
+
+/* =====================================================
+   WORLD TIME
+===================================================== */
+
+function updateWorldTime(){
+
+    const currency =
+    getCurrency(
+        toCurrency.value
+    );
+
+
+    if(!currency){
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "timeFlag"
+    ).src =
+    getFlag(toCurrency.value);
+
+
+    document.getElementById(
+        "timeCountry"
+    ).textContent =
+    currency[3];
+
+
+    document.getElementById(
+        "timeCity"
+    ).textContent =
+    `${currency[4]} • ${currency[0]}`;
+
+
+    try{
+
+        const time =
+        new Intl.DateTimeFormat(
+            "en-US",
+            {
+                timeZone:currency[7],
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit",
+                hour12:true
+            }
+        ).format(
+            new Date()
+        );
+
+
+        document.getElementById(
+            "destinationTime"
+        ).textContent =
+        time;
+
+    }
+    catch(error){
+
+        document.getElementById(
+            "destinationTime"
+        ).textContent =
+        "--:--:--";
+
+    }
+
+}
+
+
+/* =====================================================
+   GRAPH PAIR TEXT
+===================================================== */
+
+function updateGraphPair(){
+
+    const graphPair =
+    document.getElementById(
+        "graphPair"
+    );
+
+
+    if(graphPair){
+
+        graphPair.textContent =
+        `1 ${fromCurrency.value} → ${toCurrency.value} exchange rate`;
+
+    }
+
+}
+
+
+/* =====================================================
+   GRAPH CANVAS RESIZE
+===================================================== */
+
+function resizeCanvas(){
+
+    const rect =
+    canvas.getBoundingClientRect();
+
+
+    const dpr =
+    window.devicePixelRatio || 1;
+
+
+    canvas.width =
+    rect.width * dpr;
+
+    canvas.height =
+    rect.height * dpr;
+
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+}
+
+
+/* =====================================================
+   PROFESSIONAL VERTICAL EXCHANGE RATE GRAPH
+===================================================== */
+
+function drawGraph(){
+
+    resizeCanvas();
+
+
+    const width =
+    canvas.clientWidth;
+
+    const height =
+    canvas.clientHeight;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /* -------------------------
+       WHITE BACKGROUND
+    ------------------------- */
+
+    ctx.fillStyle =
+    "#ffffff";
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /* -------------------------
+       PAIR
+    ------------------------- */
+
+    updateGraphPair();
+
+
+    /* -------------------------
+       GET REAL PAIR HISTORY
+    ------------------------- */
+
+    const pairHistory =
+    historyData
+    .filter(
+        item =>
+        item.from === fromCurrency.value &&
+        item.to === toCurrency.value
+    )
+    .slice(0,8)
+    .reverse();
+
+
+    let values;
+
+
+    if(pairHistory.length >= 2){
+
+        values =
+        pairHistory.map(
+            item =>
+            Number(item.rate)
+        );
+
+    }
+    else{
+
+        /*
+          No history yet:
+          Show the current exchange rate
+          as a clean professional line.
+        */
+
+        values = [
+
+            currentRate,
+            currentRate,
+            currentRate,
+            currentRate,
+            currentRate,
+            currentRate,
+            currentRate
+
+        ];
+
+    }
+
+
+    /* -------------------------
+       GRAPH DIMENSIONS
+    ------------------------- */
+
+    const left = 58;
+    const right = 25;
+    const top = 30;
+    const bottom = 35;
+
+
+    const graphWidth =
+    width - left - right;
+
+
+    const graphHeight =
+    height - top - bottom;
+
+
+    /* -------------------------
+       MIN MAX
+    ------------------------- */
+
+    let min =
+    Math.min(...values);
+
+    let max =
+    Math.max(...values);
+
+
+    if(min === max){
+
+        const gap =
+        Math.abs(min * 0.04) || 0.01;
+
+
+        min -= gap;
+        max += gap;
+
+    }
+
+
+    const range =
+    max - min;
+
+
+    /* -------------------------
+       HORIZONTAL GRID
+    ------------------------- */
+
+    ctx.strokeStyle =
+    "#e6edf5";
+
+    ctx.lineWidth = 1;
+
+
+    for(
+        let i = 0;
+        i <= 5;
+        i++
+    ){
+
+        const y =
+        top +
+        (graphHeight / 5) * i;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            left,
+            y
+        );
+
+        ctx.lineTo(
+            width - right,
+            y
+        );
+
+        ctx.stroke();
+
+
+        /* RATE LABEL */
+
+        const value =
+        max -
+        (range / 5) * i;
+
+
+        ctx.fillStyle =
+        "#64748b";
+
+        ctx.font =
+        "600 10px Inter";
+
+        ctx.textAlign =
+        "right";
+
+
+        ctx.fillText(
+            formatNumber(value),
+            left - 8,
+            y + 4
+        );
+
+    }
+
+
+    /* -------------------------
+       VERTICAL GRID
+    ------------------------- */
+
+    const numberOfPoints =
+    values.length;
+
+
+    for(
+        let i = 0;
+        i < numberOfPoints;
+        i++
+    ){
+
+        const x =
+        left +
+        (
+            i /
+            Math.max(
+                numberOfPoints - 1,
+                1
+            )
+        ) *
+        graphWidth;
+
+
+        ctx.strokeStyle =
+        "#f1f5f9";
+
+        ctx.lineWidth = 1;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            top
+        );
+
+        ctx.lineTo(
+            x,
+            height - bottom
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    /* -------------------------
+       CREATE POINTS
+    ------------------------- */
+
+    const points =
+    values.map(
+        (value,index) => {
+
+            const x =
+            left +
+            (
+                index /
+                Math.max(
+                    values.length - 1,
+                    1
+                )
+            ) *
+            graphWidth;
+
+
+            const y =
+            top +
+            (
+                (max - value) /
+                range
+            ) *
+            graphHeight;
+
+
+            return {
+                x:x,
+                y:y,
+                value:value
+            };
+
+        }
+    );
+
+
+    /* -------------------------
+       GRAPH AREA FILL
+    ------------------------- */
+
+    if(points.length > 1){
+
+        const gradient =
+        ctx.createLinearGradient(
+            0,
+            top,
+            0,
+            height
+        );
+
+
+        gradient.addColorStop(
+            0,
+            "rgba(37,99,235,.16)"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "rgba(37,99,235,0)"
+        );
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+            points[0].x,
+            height - bottom
+        );
+
+
+        points.forEach(
+            point => {
+
+                ctx.lineTo(
+                    point.x,
+                    point.y
+                );
+
+            }
+        );
+
+
+        ctx.lineTo(
+            points[points.length-1].x,
+            height - bottom
+        );
+
+
+        ctx.closePath();
+
+
+        ctx.fillStyle =
+        gradient;
+
+        ctx.fill();
+
+    }
+
+
+    /* -------------------------
+       GRAPH LINE
+    ------------------------- */
+
+    ctx.beginPath();
+
+
+    points.forEach(
+        (point,index) => {
+
+            if(index === 0){
+
+                ctx.moveTo(
+                    point.x,
+                    point.y
+                );
+
+            }
+            else{
+
+                ctx.lineTo(
+                    point.x,
+                    point.y
+                );
+
+            }
+
+        }
+    );
+
+
+    ctx.strokeStyle =
+    "#2563eb";
+
+    ctx.lineWidth = 3;
+
+    ctx.lineJoin =
+    "round";
+
+    ctx.lineCap =
+    "round";
+
+    ctx.stroke();
+
+
+    /* -------------------------
+       POINTS
+    ------------------------- */
+
+    points.forEach(
+        point => {
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                point.x,
+                point.y,
+                4,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fillStyle =
+            "#38bdf8";
+
+            ctx.fill();
+
+
+            ctx.strokeStyle =
+            "#ffffff";
+
+            ctx.lineWidth = 2;
+
+            ctx.stroke();
+
+        }
+    );
+
+
+    /* -------------------------
+       CURRENT RATE
+    ------------------------- */
+
+    ctx.fillStyle =
+    "#173b60";
+
+    ctx.font =
+    "800 12px Inter";
+
+    ctx.textAlign =
+    "right";
+
+
+    ctx.fillText(
+        `1 ${fromCurrency.value} = ${formatNumber(currentRate)} ${toCurrency.value}`,
+        width - right,
+        17
+    );
+
+
+    /* -------------------------
+       BOTTOM LABEL
+    ------------------------- */
+
+    ctx.textAlign =
+    "left";
+
+
+    ctx.fillStyle =
+    "#94a3b8";
+
+    ctx.font =
+    "500 9px Inter";
+
+
+    if(pairHistory.length >= 2){
+
+        ctx.fillText(
+            "Old",
+            left,
+            height - 10
+        );
+
+
+        ctx.textAlign =
+        "right";
+
+
+        ctx.fillText(
+            "Latest",
+            width - right,
+            height - 10
+        );
+
+    }
+    else{
+
+        ctx.fillText(
+            "Current exchange rate",
+            left,
+            height - 10
+        );
+
+    }
+
+
+    ctx.textAlign =
+    "left";
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+loadCurrencies();
+
+renderHistory();
+
+updateWorldTime();
+
+updateGraphPair();
+
+
+/* Initial conversion */
+
+convertCurrency(false);
+
+
+/* World clock */
+
+setInterval(
+    updateWorldTime,
+    1000
+);
+
+
+/* Initial graph */
+
+setTimeout(
+    drawGraph,
+    600
+);
+
+
+/* Redraw graph when window changes */
+
+window.addEventListener(
+    "resize",
+    drawGraph
+);
+
+</script>
+
+</body>
+
+</html>
